@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Meridian — Forex Research",
-  description: "Explore forex trend-pullback setups with transparent rules and synthetic sample data.",
+  title: "Meridian Trading Assistant",
+  description: "Learn forex strategies with clear explanations, annotated charts, and synthetic teaching examples.",
   other: {
     "codex-preview": "development",
   },

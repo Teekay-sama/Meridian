@@ -103,7 +103,7 @@ export default function Home() {
     const nextStep = checks.find(c => !c.pass);
     const toggleWatch = (pair: Pair) => setPrefs(p => ({ ...p, watchlist: p.watchlist.includes(pair) ? p.watchlist.filter(x => x !== pair) : [...p.watchlist, pair] }));
     return <main>
-    <header className="topbar"><a className="brand" href="/" aria-label="Meridian home"><span className="brand-icon">M<span>↗</span></span>meridian<span className="brand-tag">RESEARCH</span></a><div className="workspace-label">Personal workspace <span className="local">LOCAL</span></div><button className="quiet" onClick={() => { setPrefs(defaults); setSampleMode('shared'); setShow20(true); setShow50(true); setSide('bullish'); setNotice('Workspace reset to defaults.'); }}>Reset workspace</button></header>
+    <header className="topbar"><a className="brand" href="/" aria-label="Meridian home"><img className="brand-art" src="/meridian-logo.png" alt="Meridian Trading Assistant" width={1536} height={1024}/></a><div className="workspace-label">Personal workspace <span className="local">LOCAL</span></div><button className="quiet" onClick={() => { setPrefs(defaults); setSampleMode('shared'); setShow20(true); setShow50(true); setSide('bullish'); setNotice('Workspace reset to defaults.'); }}>Reset workspace</button></header>
     <div className="sample-banner"><span className="sample-badge">SAMPLE DATA</span><span>Sample data — not live prices</span>{sampleMode !== 'shared' && <strong className="teaching-label">{sampleMode === 'bullish' ? 'Bullish' : 'Bearish'} teaching example</strong>}<span className="banner-note">A space to explore the rules, one candle at a time.</span></div>
     <div className="page-heading"><div><p className="eyebrow">FOREX / ANALYSIS WORKSPACE</p><h1>Read the setup.</h1><p>Choose a strategy. Learn what to look for. See the evidence.</p></div><div className="snapshot"><span>Sample snapshot</span><strong>24 Sep 2026 · 16:00 UTC</strong></div></div>
     <div className="workspace-grid">
@@ -127,7 +127,7 @@ export default function Home() {
         <p className="next-step" aria-live="polite">{nextStep ? `What is missing: ${nextStep.name.toLowerCase()}.` : `All ${side} checks match this sample. Compare the opposite direction to see why it differs.`}</p><ol className="checks">{checks.map((check, i) => <li key={check.name}><div className={`check-icon ${check.pass ? 'pass' : ''}`}>{check.pass ? '✓' : '−'}</div><div><div className="check-title"><h3>{i + 1}. {check.name}</h3><span>{check.pass ? 'PASS' : 'FAIL'}</span></div><p className="check-explainer">{strategy.steps[i]}</p><details className="evidence"><summary>Show price evidence</summary><p>{check.detail}</p></details></div></li>)}</ol>
         <div className="analysis-time">Evaluated at sample close<br /><strong>{new Date(series.asOf).toISOString().slice(0, 16).replace('T', ' ')} UTC</strong></div><p className="strategy-note">An illustrative ruleset, not a validated trading strategy. A matching setup does not establish profitability.</p>
       </aside>
-    </div><footer><span>MERIDIAN <span className="muted">/ Forex research prototype</span></span><span>Local workspace · Synthetic data · v0.1</span></footer>
+    </div><footer><span>MERIDIAN <span className="muted">/ Trading Assistant</span></span><span>Local workspace · Synthetic data · v0.1</span></footer>
     {notice && <div className="toast" role="status">{notice}<button onClick={() => setNotice('')} aria-label="Dismiss message">×</button></div>}
   </main>;
 }
