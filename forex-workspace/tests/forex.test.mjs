@@ -54,3 +54,8 @@ test('preferences handle corruption, invalid values, duplicates and empty watchl
   assert.deepEqual(parsePreferences(JSON.stringify({...defaults,watchlist:[]})).watchlist,[]);
   assert.deepEqual(parsePreferences(JSON.stringify({...defaults,watchlist:['EUR/USD','EUR/USD']})).watchlist,['EUR/USD']);
 });
+test('flat prices seed both averages identically, avoiding phantom crossovers',()=>{
+ const data=Array(240).fill(1.105);
+ assert.equal(ema(data,20).at(-1),ema(data,50).at(-1));
+ assert.equal(ema(data,20).at(-1),1.105);
+});

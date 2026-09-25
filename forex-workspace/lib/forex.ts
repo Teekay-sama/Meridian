@@ -39,7 +39,8 @@ export function ema(values: number[], period: number): (number | null)[] {
     const result: (number | null)[] = values.map(() => null);
     if (values.length < period)
         return result;
-    let current = values.slice(0, period).reduce((a, b) => a + b, 0) / period;
+    const origin = values[0];
+    let current = origin + values.slice(0, period).reduce((sum, value) => sum + (value - origin), 0) / period;
     result[period - 1] = current;
     for (let i = period; i < values.length; i++) {
         current += (values[i] - current) * 2 / (period + 1);
@@ -103,19 +104,22 @@ export const sampleProvider: MarketDataProvider = { getSeries(pair, interval) {
         }
         return { pair, interval, asOf, source: 'Deterministic synthetic sample', candles };
     } };
+export const STRATEGY_IDS = ['trend-pullback', 'support-resistance', 'range-breakout', 'ema-crossover', 'smc-sweep', 'smc-fvg'] as const;
+export type StrategyId = typeof STRATEGY_IDS[number];
 export type Preferences = {
+    strategy: StrategyId;
     pair: Pair;
     interval: Interval;
     watchlist: Pair[];
 };
-export const defaults: Preferences = { pair: 'EUR/USD', interval: '15m', watchlist: [...PAIRS] };
+export const defaults: Preferences = { pair: 'EUR/USD', interval: '15m', watchlist: [...PAIRS], strategy: 'trend-pullback' };
 export const STORAGE_KEY = 'meridian.preferences.v1';
 export function parsePreferences(raw: string | null): Preferences {
     try {
         const p = JSON.parse(raw ?? 'null');
         if (!p || !PAIRS.includes(p.pair) || !['15m', '4h'].includes(p.interval) || !Array.isArray(p.watchlist) || !p.watchlist.every((x: Pair) => PAIRS.includes(x)))
             return defaults;
-        return { pair: p.pair, interval: p.interval, watchlist: [...new Set<Pair>(p.watchlist)] };
+        return { strategy: STRATEGY_IDS.includes(p.strategy) ? p.strategy : 'trend-pullback', pair: p.pair, interval: p.interval, watchlist: [...new Set<Pair>(p.watchlist)] };
     }
     catch {
         return defaults;
