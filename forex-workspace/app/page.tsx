@@ -118,7 +118,7 @@ export default function Home() {
     const nextStep = checks.find(c => !c.pass);
     const toggleWatch = (pair: Pair) => setPrefs(p => ({ ...p, watchlist: p.watchlist.includes(pair) ? p.watchlist.filter(x => x !== pair) : [...p.watchlist, pair] }));
     return <main>
-    <header className="topbar"><a className="brand" href="/" aria-label="Meridian Trading Assistant home"><img className="brand-art" src="/meridian-mark.png" alt="" width={1254} height={1254}/><span className="brand-wordmark"><strong>MERIDIAN</strong><span>TRADING ASSISTANT</span></span></a><div className="workspace-label">Personal workspace <span className="local">LOCAL</span></div><button className="quiet" onClick={() => { setPrefs(defaults); setRefresh(x => x + 1); setShow20(true); setShow50(true); setSide('bullish'); setNotice('Workspace reset to defaults.'); }}>Reset workspace</button></header>
+    <header className="topbar"><a className="brand" href="/" aria-label="Meridian Trading Assistant home"><img className="brand-art" src="/meridian-mark.png" alt="" width={1254} height={1254}/><span className="brand-wordmark"><strong>MERIDIAN</strong><span>TRADING ASSISTANT</span></span></a><div className="workspace-label">Trading workspace</div><button className="quiet" onClick={() => { setPrefs(defaults); setRefresh(x => x + 1); setShow20(true); setShow50(true); setSide('bullish'); setNotice('Workspace reset to defaults.'); }}>Reset workspace</button></header>
     <Navigation />
     <div className="sample-banner"><span className="sample-badge">TWELVE DATA</span><span>Market candles · manual refresh · 5-minute cache</span><button className="quiet" disabled={loading} onClick={() => setRefresh(x => x + 1)}>Refresh data</button></div>
     {loading && <p role="status">Loading market data…</p>}{error && <p role="alert" className="panel">{error} — use Refresh data to retry.</p>}
@@ -128,7 +128,7 @@ export default function Home() {
         {prefs.watchlist.length === 0 && <p className="empty">No saved pairs. Add one below to keep it close.</p>}
         {prefs.watchlist.map(pair => <button key={pair} className={`pair-button ${prefs.pair === pair ? 'selected' : ''}`} aria-pressed={prefs.pair === pair} onClick={() => setPrefs(p => ({...p, pair}))}><strong>{pair}</strong><span className="pair-bottom">{pair === prefs.pair && latest ? price(latest.close, pair) : 'Select to load candles'}</span></button>)}
         <details className="manage"><summary>Manage watchlist</summary>{PAIRS.map(pair => <label key={pair}><input type="checkbox" checked={prefs.watchlist.includes(pair)} onChange={() => toggleWatch(pair)}/>{pair}</label>)}</details>
-        <div className="sidebar-bottom"><span className="eyebrow">YOUR WORKSPACE</span><p>Saved on this browser</p><small>Watchlist and preferences stay on this device. No account needed.</small></div>
+        <div className="sidebar-bottom"><span className="eyebrow">YOUR WORKSPACE</span><p>Your saved preferences</p><small>Watchlist and preferences stay on this device. No account needed.</small></div>
       </aside>
       <section className="market-column">
       <div className="strategy-picker panel"><div className="strategy-picker-top"><div><label htmlFor="strategy" className="eyebrow">CHOOSE YOUR STRATEGY</label><select id="strategy" value={prefs.strategy} onChange={e => setPrefs(p => ({ ...p, strategy: e.target.value as StrategyId }))}>{STRATEGIES.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}</select></div><span className="difficulty">{strategy.level}</span></div><p>{strategy.idea}</p>
@@ -142,7 +142,7 @@ export default function Home() {
         <p className="next-step" aria-live="polite">{nextStep ? `What is missing: ${nextStep.name.toLowerCase()}.` : checks.length ? `All ${side} checks match these candles.` : 'Waiting for sufficient market data.'}</p><ol className="checks">{checks.map((check, i) => <li key={check.name}><div className={`check-icon ${check.pass ? 'pass' : ''}`}>{check.pass ? '✓' : '−'}</div><div><div className="check-title"><h3>{i + 1}. {check.name}</h3><span>{check.pass ? 'PASS' : 'FAIL'}</span></div><p className="check-explainer">{strategy.steps[i]}</p><details className="evidence"><summary>Show price evidence</summary><p>{check.detail}</p></details></div></li>)}</ol>
         <div className="analysis-time">Latest completed candle opened at<br /><strong>{latest ? new Date(latest.time).toISOString().slice(0, 16).replace('T', ' ') + ' UTC' : 'Awaiting data'}</strong></div><p className="strategy-note">An illustrative ruleset, not a validated trading strategy. A matching setup does not establish profitability.</p>
       </aside>
-    </div><footer><span>MERIDIAN <span className="muted">/ Trading Assistant</span></span><span>Local workspace · Twelve Data · v0.2</span></footer>
+    </div><footer><span>MERIDIAN <span className="muted">/ Trading Assistant</span></span><span>Market analysis · Powered by Twelve Data</span></footer>
     {notice && <div className="toast" role="status">{notice}<button onClick={() => setNotice('')} aria-label="Dismiss message">×</button></div>}
   </main>;
 }

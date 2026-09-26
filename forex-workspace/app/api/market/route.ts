@@ -18,7 +18,7 @@ export async function GET(request: Request) {
       calls = calls.filter(t => now-t < 60000);
       const today = new Date(now).toISOString().slice(0,10);
       if (day !== today) {day=today; dailyCalls=0;}
-      if (calls.length >= 7 || dailyCalls >= 750) return Response.json({error:'Local API budget reached. Please wait before refreshing.'}, {status:429, headers});
+      if (calls.length >= 7 || dailyCalls >= 750) return Response.json({error:'Market data request limit reached. Please wait before refreshing.'}, {status:429, headers});
       calls.push(now); dailyCalls++;
       work = (async () => {
         const endpoint = new URL('https://api.twelvedata.com/time_series');
