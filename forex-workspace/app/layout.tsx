@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Meridian Trading Assistant",
-  description: "Learn forex strategies with clear explanations, annotated charts, and synthetic teaching examples.",
+  description: "Explore forex market data, strategy checklists, and AI chart screenshot reviews.",
   other: {
     "codex-preview": "development",
   },

@@ -7,7 +7,7 @@ export async function GET(){return Response.json({configured:!!config().GROQ_API
 export async function POST(request:Request){
  const origin=request.headers.get('origin');
  if(origin!==new URL(request.url).origin) return Response.json({error:'Use the chart upload form in Meridian.'},{status:403,headers});
- if(!config().GROQ_API_KEY) return Response.json({error:'AI analysis needs a Groq API key. Add GROQ_API_KEY to the local .dev.vars file, then restart the server.'},{status:503,headers});
+ if(!config().GROQ_API_KEY) return Response.json({error:'AI analysis is not configured. Contact the workspace administrator.'},{status:503,headers});
  if(Number(request.headers.get('content-length'))>6*1024*1024) return Response.json({error:'Image is too large. Maximum 5 MB.'},{status:413,headers});
  const now=Date.now(); attempts=attempts.filter(t=>now-t<60000);
  if(busy||attempts.length>=3) return Response.json({error:'Please wait before requesting another analysis.'},{status:429,headers});
@@ -25,7 +25,7 @@ export async function POST(request:Request){
   attempts.push(now);
   let binary='';for(let i=0;i<bytes.length;i+=8192)binary+=String.fromCharCode(...bytes.slice(i,i+8192));
   const response=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{Authorization:`Bearer ${config().GROQ_API_KEY}`,'Content-Type':'application/json'},signal:AbortSignal.timeout(60000),body:JSON.stringify({model:config().GROQ_VISION_MODEL||'qwen/qwen3.8-27b',max_completion_tokens:2200,response_format:{type:'json_object'},messages:[{role:'system',content:CHART_PROMPT},{role:'user',content:[{type:'text',text:'Analyze this chart. User-supplied context (may be incomplete): '+context},{type:'image_url',image_url:{url:`data:${mime};base64,${btoa(binary)}`}}]}]})});
-  if(!response.ok)return Response.json({error:response.status===429?'Groq usage limit reached. Try later or check your account limits.':'Groq could not analyze the chart. Check the server API key and model access.'},{status:502,headers});
+  if(!response.ok)return Response.json({error:response.status===429?'AI usage limit reached. Please try again later.':'AI analysis is unavailable. Please retry or contact the workspace administrator.'},{status:502,headers});
   const data=await response.json() as {choices?:{finish_reason?:string;message?:{content?:string}}[]};
   const choice=data.choices?.[0];
   if(choice?.finish_reason!=='stop'||!choice.message?.content)throw new Error('Incomplete response');
