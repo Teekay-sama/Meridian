@@ -1,6 +1,7 @@
+import {sampleProvider, teachingSeries} from './fixtures.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { analyze, sampleProvider, PAIRS, ema, duration, parsePreferences, defaults } from '../lib/forex.ts';
+import { analyze, PAIRS, ema, duration, parsePreferences, defaults } from '../lib/forex.ts';
 for (const interval of ['15m', '4h']) {
   for (const [i,pair] of PAIRS.entries()) {
     test(`${pair} ${interval} fixed sample outcome`,()=>{

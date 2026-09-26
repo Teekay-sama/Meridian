@@ -1,7 +1,8 @@
+import {sampleProvider, teachingSeries} from './fixtures.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {STRATEGIES,teachingSeries,evaluateStrategy} from '../lib/strategies.ts';
-import {PAIRS,parsePreferences,defaults,sampleProvider} from '../lib/forex.ts';
+import {STRATEGIES,evaluateStrategy} from '../lib/strategies.ts';
+import {PAIRS,parsePreferences,defaults} from '../lib/forex.ts';
 for(const strategy of STRATEGIES){
  for(const direction of ['bullish','bearish']){
   test(`${strategy.id}: ${direction} examples work for every pair and interval`,()=>{

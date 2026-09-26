@@ -16,7 +16,7 @@ export type MarketSeries = {
     candles: Candle[];
 };
 export interface MarketDataProvider {
-    getSeries(pair: Pair, interval: Interval): MarketSeries;
+    getSeries(pair: Pair, interval: Interval): Promise<MarketSeries>;
 }
 export const duration = (interval: Interval) => interval === '15m' ? 900000 : 14400000;
 export type Check = {
@@ -74,36 +74,6 @@ export function analyze(series: MarketSeries): Analysis {
     const bullish = checks(true), bearish = checks(false);
     return { ...base, bullish, bearish, status: bullish.every(c => c.pass) ? 'Bullish setup' : bearish.every(c => c.pass) ? 'Bearish setup' : 'No matching setup' };
 }
-// Fixed synthetic fixtures: no randomness, network requests, or wall-clock dependence.
-export const sampleProvider: MarketDataProvider = { getSeries(pair, interval) {
-        const asOf = Date.UTC(2026, 8, 24, 16), step = duration(interval);
-        const base = pair === 'USD/JPY' ? 148 : pair === 'GBP/USD' ? 1.28 : 1.08, unit = pair === 'USD/JPY' ? .03 : .00022, direction = pair === 'GBP/USD' ? -1 : 1;
-        const candles: Candle[] = [];
-        for (let i = 0; i < 240; i++) {
-            const close = base + direction * unit * (i * .32 + Math.sin(i * .44) * 1.5 + Math.sin(i * .11) * 3), open = i ? candles[i - 1].close : close - unit;
-            candles.push({ time: asOf - (240 - i) * step, open, close, high: Math.max(open, close) + unit * .7, low: Math.min(open, close) - unit * .7 });
-        }
-        const fast = ema(candles.map(c => c.close), 20);
-        if (pair !== 'USD/JPY') {
-            const pull = candles[238];
-            if (direction > 0)
-                pull.low = fast[238]! - unit * .1;
-            else
-                pull.high = fast[238]! + unit * .1;
-            const last = candles[239];
-            last.open = pull.close;
-            last.close = direction > 0 ? pull.high + unit * 2 : pull.low - unit * 2;
-            last.high = Math.max(last.open, last.close) + unit * .6;
-            last.low = Math.min(last.open, last.close) - unit * .6;
-        }
-        else {
-            const last = candles[239];
-            last.close = last.open;
-            last.high = last.open + unit;
-            last.low = last.open - unit;
-        }
-        return { pair, interval, asOf, source: 'Deterministic synthetic sample', candles };
-    } };
 export const STRATEGY_IDS = ['trend-pullback', 'support-resistance', 'range-breakout', 'ema-crossover', 'smc-sweep', 'smc-fvg'] as const;
 export type StrategyId = typeof STRATEGY_IDS[number];
 export type Preferences = {

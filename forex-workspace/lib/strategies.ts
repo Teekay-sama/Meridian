@@ -1,4 +1,4 @@
-import { analyze, ema, price, sampleProvider, STRATEGY_IDS, type Analysis, type Check, type MarketSeries, type Pair, type Interval, type StrategyId } from './forex.ts';
+import { analyze, ema, price, STRATEGY_IDS, type Analysis, type Check, type MarketSeries, type Pair, type Interval, type StrategyId } from './forex.ts';
 type Strategy = {
     id: StrategyId;
     name: string;
@@ -106,51 +106,4 @@ export function evaluateStrategy(series: MarketSeries, strategy: StrategyId): St
     }
     const bullish = checks(true), bearish = checks(false);
     return { ...base, strategy, levels, bullish, bearish, status: bullish.every(x => x.pass) ? 'Bullish setup' : bearish.every(x => x.pass) ? 'Bearish setup' : 'No matching setup' };
-}
-// Purpose-built teaching examples are explicit alternatives to the shared sample.
-export function teachingSeries(pair: Pair, interval: Interval, strategy: StrategyId, direction: 'bullish' | 'bearish'): MarketSeries {
-    if (strategy === 'trend-pullback') {
-        const s = sampleProvider.getSeries(direction === 'bullish' ? 'EUR/USD' : 'GBP/USD', interval);
-        const scale = pair === 'USD/JPY' ? 130 : 1;
-        return { ...s, pair, source: `Teaching example · ${direction}`, candles: s.candles.map(c => ({ ...c, open: c.open * scale, high: c.high * scale, low: c.low * scale, close: c.close * scale })) };
-    }
-    const s = sampleProvider.getSeries(pair, interval), n = s.candles.length - 1;
-    const base = pair === 'USD/JPY' ? 150 : 1.1, unit = pair === 'USD/JPY' ? .05 : .0005;
-    const data = Array.from({ length: 240 }, (_, i) => {
-        const close = 10 + Math.sin(i * .55), open = 10 + Math.sin((i - 1) * .55);
-        return { time: s.candles[i].time, open, close, low: i % 10 === 0 ? 8 : Math.min(open, close) - .3, high: i % 10 === 5 ? 12 : Math.max(open, close) + .3 };
-    });
-    const set = (i: number, open: number, close: number, low: number, high: number) => { data[i] = { ...data[i], open, close, low, high }; };
-    if (strategy === 'support-resistance') {
-        set(n - 1, 9, 8.6, 8, 9.2);
-        set(n, 8.6, 10, 8.5, 10.2);
-    }
-    if (strategy === 'range-breakout') {
-        set(n, 10, 13, 9.8, 13.2);
-    }
-    if (strategy === 'ema-crossover') {
-        for (let i = 0; i < n; i++) {
-            const close = 12 - i * .01;
-            set(i, close + .008, close, close - .02, close + .025);
-        }
-        const closes = data.slice(0, n).map(c => c.close), fast = ema(closes, 20).at(-1)!, slow = ema(closes, 50).at(-1)!;
-        const a = 2 / 21, b = 2 / 51, threshold = ((1 - b) * slow - (1 - a) * fast) / (a - b);
-        const close = threshold + .08, open = data[n - 1].close;
-        set(n, open, close, Math.min(open, close) - .02, Math.max(open, close) + .02);
-    }
-    if (strategy === 'smc-sweep') {
-        set(n - 1, 9, 8.7, 7, 9.3);
-        set(n, 8.7, 10, 8.5, 10.2);
-    }
-    if (strategy === 'smc-fvg') {
-        // Gap: first high 10, third low 12; latest retests at 11 then closes 13.
-        set(n - 5, 9, 9.5, 8.8, 10);
-        set(n - 4, 9.5, 12.5, 9.4, 12.8);
-        set(n - 3, 12.5, 13, 12, 13.2);
-        set(n - 2, 13, 13.5, 12.8, 13.8);
-        set(n - 1, 13.5, 13.6, 13, 13.9);
-        set(n, 11.5, 13, 11, 13.2);
-    }
-    const transform = (v: number) => base + unit * (direction === 'bullish' ? v : 20 - v);
-    return { ...s, source: `Teaching example · ${direction}`, candles: data.map(c => ({ ...c, open: transform(c.open), close: transform(c.close), low: transform(direction === 'bullish' ? c.low : c.high), high: transform(direction === 'bullish' ? c.high : c.low) })) };
 }
