@@ -1,4 +1,3 @@
-import { env } from 'cloudflare:workers';
 import { PAIRS, type Pair, type Interval, type MarketSeries } from '../../../lib/forex';
 import { parseTwelveData } from '../../../lib/twelve-data';
 const cache = new Map<string, MarketSeries>();
@@ -9,7 +8,7 @@ export async function GET(request: Request) {
   const url = new URL(request.url), pair = url.searchParams.get('pair') as Pair, interval = url.searchParams.get('interval') as Interval;
   const headers = {'Cache-Control':'no-store'};
   if (!PAIRS.includes(pair) || !['15m','4h'].includes(interval)) return Response.json({error:'Unsupported pair or interval.'}, {status:400, headers});
-  const key = (env as Record<string, unknown>).TWELVE_DATA_API_KEY as string | undefined;
+  const key = process.env.TWELVE_DATA_API_KEY as string | undefined;
   if (!key) return Response.json({error:'Twelve Data API key is not configured on the server.'}, {status:503, headers});
   const id = pair + interval, now = Date.now(), cached = cache.get(id);
   if (cached && now - cached.asOf < 300000) return Response.json(cached, {headers});

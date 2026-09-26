@@ -1,12 +1,12 @@
-import {env} from 'cloudflare:workers';
 import {chartAnalysisSchema,CHART_PROMPT,imageType} from '../../../lib/chart-analysis';
 const headers={'Cache-Control':'no-store'};
 let busy=false, attempts:number[]=[];
-const config=()=>env as Record<string,string|undefined>;
+const config=()=>process.env;
 export async function GET(){return Response.json({configured:!!config().GROQ_API_KEY}, {headers});}
 export async function POST(request:Request){
  const origin=request.headers.get('origin');
- if(origin!==new URL(request.url).origin) return Response.json({error:'Use the chart upload form in Meridian.'},{status:403,headers});
+ const expectedOrigin=process.env.RENDER_EXTERNAL_HOSTNAME ? 'https://'+process.env.RENDER_EXTERNAL_HOSTNAME : new URL(request.url).origin;
+ if(origin!==expectedOrigin) return Response.json({error:'Use the chart upload form in Meridian.'},{status:403,headers});
  if(!config().GROQ_API_KEY) return Response.json({error:'AI analysis is not configured. Contact the workspace administrator.'},{status:503,headers});
  if(Number(request.headers.get('content-length'))>6*1024*1024) return Response.json({error:'Image is too large. Maximum 5 MB.'},{status:413,headers});
  const now=Date.now(); attempts=attempts.filter(t=>now-t<60000);

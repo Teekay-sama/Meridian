@@ -10,7 +10,7 @@ Use Node.js 22.13+ and npm. From forex-workspace:
 2. Create `.dev.vars` with `TWELVE_DATA_API_KEY=your_private_key` (already configured on this machine). This file is ignored by Git. Never use a public client environment variable for the key.
 3. Run `npm run dev` and open http://localhost:5173. Restart after changing the key. On PowerShell use npm.cmd if npm.ps1 is blocked.
 
-The local Cloudflare/Vinext runtime reads `.dev.vars`. Network access to api.twelvedata.com is required. No external accounts or deployment are configured by these commands.
+The Node launcher reads `.dev.vars` locally. Network access to api.twelvedata.com is required. No external accounts or deployment are configured by these commands.
 
 ## Data behavior
 
@@ -30,7 +30,7 @@ Watchlist, pair, timeframe and strategy persist in browser storage. Reset restor
 
 ## Verification
 
-`npm test` runs strategy and provider parsing tests. `npm run typecheck` checks TypeScript. `npm run build` creates production artifacts; it does not deploy the app. The supported configured local preview command is `npm run dev`.
+`npm test` runs strategy and provider parsing tests. `npm run typecheck` checks TypeScript. `npm run build` creates production artifacts; it does not deploy the app. Use `npm run dev` for development and `npm start` for production after building.
 
 The API key stays in the server runtime and is sent to Twelve Data in an Authorization header. It is not returned to the browser. Rotate any key previously shared in chat or URLs and update `.dev.vars` locally.
 
@@ -54,3 +54,11 @@ Results describe up to two conditional scenarios with entry, TP, SL, evidence, c
 Requests are same-origin, bounded in size, limited to one in flight / three per minute per server process, and time out after 60 seconds. This remains a local prototype: authentication and durable per-user spend limits are required before hosting for a group. Cancelling discards the result in the UI; upstream processing may already have incurred a charge.
 
 Validation: 47 tests pass, including unreadable/no-setup responses, invalid TP/SL geometry and image signatures. Real Groq image inference remains untested until a key is configured. Official image API documentation: https://console.groq.com/docs/vision
+
+## Render deployment
+
+Use a Node Web Service with root directory `forex-workspace`, build command `npm ci --include=dev && npm run build`, and start command `npm start`. Do not use `npm run dev` on Render. The production server binds to `0.0.0.0` and Render's PORT. `/api/health` is the health endpoint. `render.yaml` provides the same settings for new Blueprint deployments; existing services must have their commands updated in the dashboard.
+
+Set TWELVE_DATA_API_KEY and GROQ_API_KEY as secret environment variables in Render. Optional GROQ_VISION_MODEL defaults to qwen/qwen3.8-27b. Never upload .dev.vars. The application uses process.env on the Node server, with no Cloudflare runtime required. Screenshot origin validation uses Render's external hostname behind its HTTPS proxy. For custom domains, update the allowed origin before use.
+
+This version has no user authentication: anyone with the public URL can consume the shared API allowance. The in-memory limits are per process and reset on restart. Private workspaces and provider group-display permissions are not implemented by deploying it.
