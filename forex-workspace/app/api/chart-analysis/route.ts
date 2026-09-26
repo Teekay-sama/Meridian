@@ -3,11 +3,11 @@ import {chartAnalysisSchema,CHART_PROMPT,imageType} from '../../../lib/chart-ana
 const headers={'Cache-Control':'no-store'};
 let busy=false, attempts:number[]=[];
 const config=()=>env as Record<string,string|undefined>;
-export async function GET(){return Response.json({configured:!!config().OPENAI_API_KEY}, {headers});}
+export async function GET(){return Response.json({configured:!!config().GROQ_API_KEY}, {headers});}
 export async function POST(request:Request){
  const origin=request.headers.get('origin');
  if(origin!==new URL(request.url).origin) return Response.json({error:'Use the chart upload form in Meridian.'},{status:403,headers});
- if(!config().OPENAI_API_KEY) return Response.json({error:'AI analysis needs an OpenAI API key. Add OPENAI_API_KEY to the local .dev.vars file, then restart the server.'},{status:503,headers});
+ if(!config().GROQ_API_KEY) return Response.json({error:'AI analysis needs a Groq API key. Add GROQ_API_KEY to the local .dev.vars file, then restart the server.'},{status:503,headers});
  if(Number(request.headers.get('content-length'))>6*1024*1024) return Response.json({error:'Image is too large. Maximum 5 MB.'},{status:413,headers});
  const now=Date.now(); attempts=attempts.filter(t=>now-t<60000);
  if(busy||attempts.length>=3) return Response.json({error:'Please wait before requesting another analysis.'},{status:429,headers});
@@ -24,11 +24,12 @@ export async function POST(request:Request){
   if(!mime||mime!==file.type) return Response.json({error:'Unsupported image. Use PNG, JPEG or WebP.'},{status:400,headers});
   attempts.push(now);
   let binary='';for(let i=0;i<bytes.length;i+=8192)binary+=String.fromCharCode(...bytes.slice(i,i+8192));
-  const response=await fetch('https://api.openai.com/v1/responses',{method:'POST',headers:{Authorization:`Bearer ${config().OPENAI_API_KEY}`,'Content-Type':'application/json'},signal:AbortSignal.timeout(60000),body:JSON.stringify({model:config().OPENAI_VISION_MODEL||'gpt-4.1-mini',store:false,instructions:CHART_PROMPT,max_output_tokens:2200,text:{format:{type:'json_object'}},input:[{role:'user',content:[{type:'input_text',text:'Analyze this chart. User-supplied context (may be incomplete): '+context},{type:'input_image',image_url:`data:${mime};base64,${btoa(binary)}`,detail:'high'}]}]})});
-  if(!response.ok)return Response.json({error:response.status===429?'OpenAI usage limit reached. Check API billing or try later.':'OpenAI could not analyze the chart. Check the server API key and model access.'},{status:502,headers});
-  const data=await response.json() as {status?:string;output?:{content?:{type:string;text?:string}[]}[]};
-  if(data.status!=='completed')throw new Error('Incomplete response');
-  const output=(data.output||[]).flatMap(x=>x.content||[]).filter(x=>x.type==='output_text').map(x=>x.text||'').join('');
+  const response=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{Authorization:`Bearer ${config().GROQ_API_KEY}`,'Content-Type':'application/json'},signal:AbortSignal.timeout(60000),body:JSON.stringify({model:config().GROQ_VISION_MODEL||'qwen/qwen3.8-27b',max_completion_tokens:2200,response_format:{type:'json_object'},messages:[{role:'system',content:CHART_PROMPT},{role:'user',content:[{type:'text',text:'Analyze this chart. User-supplied context (may be incomplete): '+context},{type:'image_url',image_url:{url:`data:${mime};base64,${btoa(binary)}`}}]}]})});
+  if(!response.ok)return Response.json({error:response.status===429?'Groq usage limit reached. Try later or check your account limits.':'Groq could not analyze the chart. Check the server API key and model access.'},{status:502,headers});
+  const data=await response.json() as {choices?:{finish_reason?:string;message?:{content?:string}}[]};
+  const choice=data.choices?.[0];
+  if(choice?.finish_reason!=='stop'||!choice.message?.content)throw new Error('Incomplete response');
+  const output=choice.message.content;
   const result=chartAnalysisSchema.parse(JSON.parse(output));
   return Response.json({analysis:result,analyzedAt:new Date().toISOString()},{headers});
  }catch{return Response.json({error:'Analysis was unavailable, timed out, or contained inconsistent levels. Try a clearer screenshot.'},{status:502,headers});}

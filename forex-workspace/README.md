@@ -36,21 +36,21 @@ The API key stays in the server runtime and is sent to Twelve Data in an Authori
 
 Before group distribution, confirm Twelve Data display/redistribution permissions. Independent sign-in and private server workspaces remain a separate milestone.
 
-## Bring your own chart / OpenAI
+## Bring your own chart / Groq
 
-The screenshot panel accepts PNG, JPEG and WebP up to 5 MB. Choose or drop a file, preview it, optionally identify the pair/timeframe/capture time, then click Analyze with OpenAI. Only that action sends the image and context to OpenAI; the app does not persist either. API requests use `store: false` (OpenAI's own data policies still apply). Remove account details before submitting.
+The screenshot panel accepts PNG, JPEG and WebP up to 5 MB. Choose or drop a file, preview it, optionally identify the pair/timeframe/capture time, then click Analyze with Groq. Only that action sends the image and context to Groq; the app does not persist either. Groq's own data policies apply to submitted images. Remove account details before submitting.
 
-To enable actual analysis, add a separate OpenAI API key to the ignored `.dev.vars` file, preserving the Twelve Data key:
+To enable actual analysis, add a separate Groq API key to the ignored `.dev.vars` file, preserving the Twelve Data key:
 
 ```text
-OPENAI_API_KEY=your_private_openai_key
-OPENAI_VISION_MODEL=gpt-4.1-mini
+GROQ_API_KEY=your_private_groq_key
+GROQ_VISION_MODEL=qwen/qwen3.8-27b
 ```
 
-Restart `npm run dev`. An OpenAI API account with model access and API billing is required. Never paste the key into the UI, client code, or Git. The default model accepts images through the Responses API; OPENAI_VISION_MODEL can select another compatible image-input model.
+Restart `npm run dev`. A Groq API account with access to the configured vision model is required; account rate and usage limits apply. Never paste the key into the UI, client code, or Git. The default model accepts images through the Chat Completions API; GROQ_VISION_MODEL can select another compatible image-input model.
 
 Results describe up to two conditional scenarios with entry, TP, SL, evidence, confirmation and invalidation. Prices must be readable, and the model can return no setup. Server validation rejects malformed results and incorrect long/short level ordering; it cannot prove the model read the chart accurately. Reward/risk is calculated from the returned price distances, excluding costs. Verify levels and current conditions before making decisions. No trades are executed.
 
 Requests are same-origin, bounded in size, limited to one in flight / three per minute per server process, and time out after 60 seconds. This remains a local prototype: authentication and durable per-user spend limits are required before hosting for a group. Cancelling discards the result in the UI; upstream processing may already have incurred a charge.
 
-Validation: 47 tests pass, including unreadable/no-setup responses, invalid TP/SL geometry and image signatures. Real OpenAI image inference remains untested until a key is configured. Official image API documentation: https://developers.openai.com/api/docs/guides/images-vision
+Validation: 47 tests pass, including unreadable/no-setup responses, invalid TP/SL geometry and image signatures. Real Groq image inference remains untested until a key is configured. Official image API documentation: https://console.groq.com/docs/vision
