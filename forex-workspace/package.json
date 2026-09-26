@@ -12,7 +12,7 @@
     "start": "node node_modules/vinext/dist/cli.js start --port 5173",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "drizzle-kit generate",
-    "test": "node --experimental-strip-types --test tests/forex.test.mjs tests/strategies.test.mjs tests/twelve-data.test.mjs",
+    "test": "node --experimental-strip-types --test tests/forex.test.mjs tests/strategies.test.mjs tests/twelve-data.test.mjs tests/chart-analysis.test.mjs",
     "typecheck": "tsc --noEmit --incremental false"
   },
   "dependencies": {

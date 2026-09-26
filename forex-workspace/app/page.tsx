@@ -1,4 +1,5 @@
 'use client';
+import ChartUpload from './chart-upload';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { defaults, PAIRS, parsePreferences, price, STORAGE_KEY, type MarketSeries, type Pair, type Preferences, type StrategyId } from '../lib/forex';
 import { STRATEGIES, strategyById, evaluateStrategy, type StrategyAnalysis } from '../lib/strategies';
@@ -121,6 +122,7 @@ export default function Home() {
     <div className="sample-banner"><span className="sample-badge">TWELVE DATA</span><span>Market candles · manual refresh · 5-minute cache</span><button className="quiet" disabled={loading} onClick={() => setRefresh(x => x + 1)}>Refresh data</button></div>
     {loading && <p role="status">Loading market data…</p>}{error && <p role="alert" className="panel">{error} — use Refresh data to retry.</p>}
     <div className="page-heading"><div><p className="eyebrow">FOREX / ANALYSIS WORKSPACE</p><h1>Read the setup.</h1><p>Choose a strategy. Learn what to look for. See the evidence.</p></div><div className="snapshot"><span>Last fetched (UTC)</span><strong>{series.asOf ? new Date(series.asOf).toISOString().slice(0, 16).replace('T', ' ') : 'Awaiting data'}</strong></div></div>
+    <ChartUpload />
     <div className="workspace-grid">
       <aside className="watchlist panel"><div className="panel-heading"><h2>Watchlist</h2><span className="count">{prefs.watchlist.length}</span></div><p className="section-note">Your currency pairs</p>
         {prefs.watchlist.length === 0 && <p className="empty">No saved pairs. Add one below to keep it close.</p>}
