@@ -1,9 +1,11 @@
 import {chartAnalysisSchema,CHART_PROMPT,imageType} from '../../../lib/chart-analysis';
+import {canSubmitAnalysis} from '../../../lib/legal-status';
 const headers={'Cache-Control':'no-store'};
 let busy=false, attempts:number[]=[];
 const config=()=>process.env;
 export async function GET(){return Response.json({configured:!!config().GROQ_API_KEY}, {headers});}
 export async function POST(request:Request){
+ if(!canSubmitAnalysis()) return Response.json({error:"AI reviews are paused while the legal documents await approval."},{status:403,headers});
  const origin=request.headers.get('origin');
  const expectedOrigin=process.env.RENDER_EXTERNAL_HOSTNAME ? 'https://'+process.env.RENDER_EXTERNAL_HOSTNAME : new URL(request.url).origin;
  if(origin!==expectedOrigin) return Response.json({error:'Use the chart upload form in Meridian.'},{status:403,headers});

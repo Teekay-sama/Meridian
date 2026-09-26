@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import LegalFooter from "./legal-footer";
 
 export const metadata: Metadata = {
   title: "Meridian Trading Assistant",
@@ -20,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">{children}<LegalFooter /></body>
     </html>
   );
 }

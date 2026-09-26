@@ -17,12 +17,13 @@ const review=[
  {title:'Keep learning',target:'.workspace-menu',text:'Return to Market workspace to explore strategy checklists and lessons. Use Help & tour anytime to replay this page’s guide.',tip:'A screenshot review is separate from the market workspace and does not place trades.'}
 ];
 export default function Tutorial({reviewPage}:{reviewPage:boolean}){
- const steps=reviewPage?review:workspace;const key='meridian.tour.v1.'+(reviewPage?'review':'workspace');
+ const steps=reviewPage?review:workspace;
  const [step,setStep]=useState<number|null>(null);const dialog=useRef<HTMLDialogElement>(null);const trigger=useRef<HTMLButtonElement>(null);
- useEffect(()=>{try{if(localStorage.getItem(key)!=='seen')setStep(0);}catch{/* Help remains available when storage is blocked. */}},[key]);
+ // Tours are opt-in: refreshing or navigating never interrupts the workspace.
  useEffect(()=>{if(step===null)return;const node=dialog.current;if(!node)return;if(!node.open)node.showModal();const target=document.querySelector(steps[step].target);target?.classList.add('tour-highlight');target?.scrollIntoView({behavior:'instant',block:'center'});return()=>{target?.classList.remove('tour-highlight');};},[step,steps]);
- function close(){try{localStorage.setItem(key,'seen');}catch{}dialog.current?.close();setStep(null);trigger.current?.focus({preventScroll:true});}
+ function close(){dialog.current?.close();setStep(null);trigger.current?.focus({preventScroll:true});}
  return <><button ref={trigger} className="quiet tour-launch" onClick={()=>setStep(0)}>Help &amp; tour</button><dialog ref={dialog} className="tour-dialog" aria-labelledby="tour-title" aria-describedby="tour-copy" onCancel={e=>{e.preventDefault();close();}}>
  {step!==null&&<><div className="tour-top"><span className="eyebrow">QUICK START · {step+1} OF {steps.length}</span><button className="quiet" onClick={close} aria-label="Close tutorial">Skip tour</button></div><div aria-live="polite" aria-atomic="true"><h2 id="tour-title">{steps[step].title}</h2><p id="tour-copy">{steps[step].text}</p><p className="tour-tip">{steps[step].tip}</p></div><div className="tour-bottom"><span aria-hidden="true">{steps.map((_,i)=><span key={i} className={i===step?'tour-dot current':'tour-dot'}/>)}</span><div><button className="quiet" disabled={step===0} onClick={()=>setStep(step-1)}>Back</button><button className="quiet tour-next" onClick={()=>step===steps.length-1?close():setStep(step+1)}>{step===steps.length-1?'Get started':'Next →'}</button></div></div></>}
  </dialog></>;
 }
+
