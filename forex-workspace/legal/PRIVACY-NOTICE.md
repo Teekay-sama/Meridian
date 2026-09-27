@@ -1,8 +1,8 @@
 # Meridian — Privacy Notice
 
-**DRAFT FOR REVIEW — NOT AN APPROVED PRIVACY NOTICE**
+**Privacy Notice**
 
-Prepared: 26 September 2026. Proposed version: privacy-2026-09-26-draft. Approval and publication date: pending.
+Version: 1.0 · Effective: 26 September 2026 · Publication approved by the operator: 27 September 2026.
 
 ## 1. Who is responsible
 
@@ -10,11 +10,11 @@ MOTHOSE ARC HOLDINGS, company registration 2026/196136/07, operates Meridian at 
 
 Registered office: PERSKEBULT202 ST 1315, SESHEGO, POLOKWANE, LIMPOPO, 0742, SOUTH AFRICA.
 
-Contact for privacy questions and requests: Tinyikomothose@gmail.com. Information Officer designation and registration must be confirmed before final approval.
+Contact for privacy questions and requests: Tinyikomothose@gmail.com. Information Officer designation and registration must be confirmed before activation of acceptance.
 
 ## 2. Information and purposes
 
-**Browser preferences:** Meridian stores your chosen pair, timeframe, strategy, watchlist and tutorial completion flags in your browser. These support convenience and are not user accounts or private server workspaces. Clearing site data removes them. Reset workspace resets workspace preferences; it does not clear every site-storage item.
+**Browser preferences:** Meridian stores your chosen pair, timeframe, strategy and watchlist in your browser. These support convenience and are not user accounts or private server workspaces. Clearing site data removes them. Reset workspace resets workspace preferences; it does not clear every site-storage item.
 
 **Screenshots and context:** Choosing a screenshot creates a local preview. Requesting AI review sends the screenshot and accompanying text through our server to the AI provider. We process them to produce the review you request. An image may contain personal information you did not intend to share; crop out names, account numbers, balances and credentials first. Do not upload other people's personal information without lawful authority.
 
@@ -22,13 +22,13 @@ Contact for privacy questions and requests: Tinyikomothose@gmail.com. Informatio
 
 **Support communications:** Emailing us provides your email address, message and any attachments. We use them to respond, address complaints and meet applicable obligations. Do not email API keys or unnecessary identity documents.
 
-**Acceptance records:** No acceptance is collected while these documents are drafts. A future acceptance system may record document versions and timestamps. Its storage, retention and identity model must be disclosed before activation; no durable acceptance database currently exists.
+**Acceptance records:** No acceptance is currently collected; acceptance controls remain unavailable while record storage is being implemented. A future acceptance system may record document versions and timestamps. Its storage, retention and identity model must be disclosed before activation; no durable acceptance database currently exists.
 
 ## 3. Processing grounds and choice
 
 We must have a lawful justification for each processing purpose under applicable law. Providing requested functionality may involve steps needed for a contract or requested service; proportionate security and operations may involve legitimate interests; legal duties may require some records. Optional tracking that requires consent must be handled separately.
 
-**Review item:** The operator must confirm and document the specific lawful ground for each purpose before approving this notice, including screenshot transmission. Clicking a button or accepting Terms is not assumed to provide consent for every processing activity.
+**Review item:** The operator must confirm and document the specific lawful ground for each purpose before activating acceptance, including screenshot transmission. Clicking a button or accepting Terms is not assumed to provide consent for every processing activity.
 
 You can use market research without submitting a screenshot. Screenshot submission is optional, but the image must be processed to generate an AI review. Declining future optional advertising consent must not be treated as acceptance of tracking.
 
@@ -48,7 +48,7 @@ The application currently provides no saved screenshot or analysis history. Imag
 
 Browser preferences remain until you clear or overwrite them. Market response caches and rate-limit counters are held temporarily in server memory and reset with the process; they are not an account history.
 
-**Review items:** Confirm actual Groq retention controls, Render logs/backup periods and regions, support-mail retention, deletion procedures and international transfer safeguards. Do not publish an unverified fixed retention period. Establish a written retention schedule based on necessity and legal obligations before final approval.
+**Review items:** Confirm actual Groq retention controls, Render logs/backup periods and regions, support-mail retention, deletion procedures and international transfer safeguards. Do not publish an unverified fixed retention period. Establish a written retention schedule based on necessity and legal obligations before activation of acceptance.
 
 Service providers may process information outside South Africa. The operator must assess applicable cross-border requirements and contractual safeguards, including POPIA section 72 where applicable; naming a provider or including this notice does not itself complete that assessment.
 
@@ -56,7 +56,7 @@ Service providers may process information outside South Africa. The operator mus
 
 We use server-side API credentials, transport encryption on the production website, upload-size/type checks and request limits. These measures reduce some risks but do not guarantee security. The current application does not provide independent user accounts, authentication or server-enforced private workspaces. Avoid sharing a device's browser profile when privacy matters.
 
-We will handle confirmed security incidents and any required notifications in accordance with applicable law. The operator must maintain an incident-response process and verify provider obligations before approval.
+We will handle confirmed security incidents and any required notifications in accordance with applicable law. The operator must maintain an incident-response process and verify provider obligations before activating acceptance.
 
 ## 7. Your rights and requests
 
@@ -74,6 +74,6 @@ Meridian is intended for people aged 18 or older. No age-verification system cur
 
 AI produces chart commentary and conditional scenarios. Meridian does not execute trades or use this feature to decide employment, credit, insurance or similar eligibility. AI output may be inaccurate; do not treat it as a verified personal financial assessment.
 
-## 10. Changes and approval
+## 10. Changes
 
-Material changes will be communicated as required before new processing is introduced. This document is a draft description and review checklist, not a certification of compliance. The operator must resolve the identified review items, obtain appropriate review and set an approval/publication date before activating acceptance.
+Material changes will be communicated as required before new processing is introduced. The operator approved publication on 27 September 2026. Approval does not establish prior user acceptance.

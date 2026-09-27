@@ -1,8 +1,8 @@
 # Meridian — Terms of Use
 
-**DRAFT FOR LEGAL REVIEW — NOT YET PUBLISHED**
+**Terms of Use**
 
-Version: 1.0 draft · Prepared: 26 September 2026
+Version: 1.0 · Effective: 26 September 2026 · Publication approved by the operator: 27 September 2026
 
 Operator: **MOTHOSE ARC HOLDINGS**, trading as Meridian  
 Company registration number: **2026/196136/07**  
@@ -11,15 +11,14 @@ Contact: **Tinyikomothose@gmail.com**
 Website: **https://meridian-1-bks5.onrender.com/**  
 Effective date specified by the operator: **26 September 2026**
 
-This draft has not yet been published or presented to users for acceptance. The specified date does not establish retrospective acceptance or remove accrued rights.
+The specified date does not establish retrospective acceptance or remove accrued rights.
 
-**Before publication:** Confirm the company details and obtain legal review. The supplied company certificate identifies a South African private company; clause 14 uses South African law, subject to legal review. The certificate details have been supplied by the operator and have not been independently verified. This document does not establish that Meridian is authorised to provide regulated financial services. Calling a feature educational does not determine its legal classification.
 
 ## Important information before you use Meridian
 
 **Trading can result in substantial losses. Meridian AI can misread charts, invent or misinterpret levels, and produce incorrect explanations. Market data can be delayed, incomplete or unavailable. Conditional entries, take-profit (TP) and stop-loss (SL) levels are not guarantees or orders, and Meridian does not execute trades. Do not rely on a setup or an AI response as the sole basis for a financial decision.**
 
-Clauses 4, 10 and 11 explain important risks and proposed limits on responsibility. They do not remove rights or remedies that applicable law says cannot be excluded. Please read them before accepting these Terms.
+Clauses 4, 10 and 11 explain important risks and limits on responsibility. They do not remove rights or remedies that applicable law says cannot be excluded. Please read them before accepting these Terms.
 
 ## 1. About these Terms
 
@@ -105,7 +104,7 @@ To the extent permitted by applicable law, Meridian is not responsible for losse
 
 **These provisions do not exclude or limit liability for fraud, wilful misconduct, gross negligence, or any other liability that applicable law does not allow to be excluded or limited. They do not waive non-excludable consumer or privacy rights.** The nature of a loss, its cause and the applicable law determine whether an exclusion can apply.
 
-No blanket obligation to indemnify Meridian for its own conduct is imposed. No fixed monetary liability cap is proposed in this draft; any cap would require a separate assessment of fairness, applicable law and how the Service is supplied.
+No blanket obligation to indemnify Meridian for its own conduct is imposed. No fixed monetary liability cap is imposed by these Terms; any cap would require a separate assessment of fairness, applicable law and how the Service is supplied.
 
 ## 12. Privacy and browser preferences
 
@@ -125,6 +124,3 @@ These Terms are governed by the laws of the Republic of South Africa, subject to
 
 If a provision is unenforceable, the remaining provisions continue only to the extent lawful and workable; an invalid clause must not be expanded to remove protected rights. A delay in enforcing a provision is not automatically a waiver. These Terms and any expressly agreed feature-specific terms form the agreement for the Service, without excluding legally binding representations or mandatory rights.
 
----
-
-**End of proposed customer-facing terms. The following companion file is for the operator, not part of the customer contract: `PUBLICATION-NOTES.md`.**

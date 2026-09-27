@@ -1,3 +1,7 @@
+## Publication approval — 27 September 2026
+
+The operator reports lawyer review and authorises publication of both documents. Public documents are TERMS-OF-USE.md and PRIVACY-NOTICE.md, version 1.0. Effective date remains 26 September 2026. No retrospective acceptance is recorded. AI reviews remain paused pending durable acceptance storage. The notes below are historical preparation notes, not current approval status.
+
 # Meridian — publication and advertising notes
 
 Prepared 26 September 2026. Internal implementation notes, not customer terms or a legal opinion.
