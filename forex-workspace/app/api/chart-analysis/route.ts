@@ -1,11 +1,11 @@
 import {chartAnalysisSchema,CHART_PROMPT,imageType} from '../../../lib/chart-analysis';
-import {canSubmitAnalysis} from '../../../lib/legal-status';
+import {canSubmitAnalysis,hasCurrentAcceptance} from '../../../lib/legal-status';
 const headers={'Cache-Control':'no-store'};
 let busy=false, attempts:number[]=[];
 const config=()=>process.env;
 export async function GET(){return Response.json({configured:!!config().GROQ_API_KEY}, {headers});}
 export async function POST(request:Request){
- if(!canSubmitAnalysis()) return Response.json({error:"AI reviews are paused while acceptance records are being set up."},{status:403,headers});
+ if(!canSubmitAnalysis()) return Response.json({error:"AI reviews are temporarily unavailable."},{status:403,headers});
  const origin=request.headers.get('origin');
  const expectedOrigin=process.env.RENDER_EXTERNAL_HOSTNAME ? 'https://'+process.env.RENDER_EXTERNAL_HOSTNAME : new URL(request.url).origin;
  if(origin!==expectedOrigin) return Response.json({error:'Use the chart upload form in Meridian.'},{status:403,headers});
@@ -20,6 +20,7 @@ export async function POST(request:Request){
   const chunks:Uint8Array[]=[];let total=0;
   while(true){const {done,value}=await reader.read();if(done)break;total+=value.length;if(total>6*1024*1024){await reader.cancel();return Response.json({error:'Image is too large. Maximum 5 MB.'},{status:413,headers});}chunks.push(value);}
   const form=await new Response(new Blob(chunks as BlobPart[]),{headers:{'Content-Type':request.headers.get('content-type')||''}}).formData();
+  if(!hasCurrentAcceptance(form.get('accepted'),form.get('termsVersion'),form.get('privacyVersion'))) return Response.json({error:'Please accept the current Terms and acknowledge the Privacy Notice before requesting a review.'},{status:403,headers});
   const file=form.get('image'), context=form.get('context');
   if(!file||typeof file==='string'||file.size>5*1024*1024||file.size===0||typeof context!=='string'||context.length>500) return Response.json({error:'Choose a PNG, JPEG or WebP image under 5 MB. Context must be under 500 characters.'},{status:400,headers});
   const bytes=new Uint8Array(await file.arrayBuffer()),mime=imageType(bytes);

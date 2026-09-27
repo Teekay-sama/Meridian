@@ -22,7 +22,7 @@ Contact for privacy questions and requests: Tinyikomothose@gmail.com. Informatio
 
 **Support communications:** Emailing us provides your email address, message and any attachments. We use them to respond, address complaints and meet applicable obligations. Do not email API keys or unnecessary identity documents.
 
-**Acceptance records:** No acceptance is currently collected; acceptance controls remain unavailable while record storage is being implemented. A future acceptance system may record document versions and timestamps. Its storage, retention and identity model must be disclosed before activation; no durable acceptance database currently exists.
+**Acceptance confirmation:** Before requesting AI review, you confirm that you are 18 or older, agree to the Terms and acknowledge this notice. The confirmation and document versions are transmitted with each review request and checked by our server. The checkbox resets when the page is reloaded. Meridian does not currently maintain a durable acceptance database or an account-linked acceptance history.
 
 ## 3. Processing grounds and choice
 

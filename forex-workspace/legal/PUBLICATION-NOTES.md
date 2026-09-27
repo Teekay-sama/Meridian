@@ -1,3 +1,7 @@
+## AI reviews enabled — 27 September 2026
+
+The operator authorised restoring AI reviews. The UI requires an unchecked-by-default confirmation; the server checks confirmation and current document versions before contacting the AI provider. No durable acceptance database is claimed or implemented. This supersedes historical pause notes below.
+
 ## Publication approval — 27 September 2026
 
 The operator reports lawyer review and authorises publication of both documents. Public documents are TERMS-OF-USE.md and PRIVACY-NOTICE.md, version 1.0. Effective date remains 26 September 2026. No retrospective acceptance is recorded. AI reviews remain paused pending durable acceptance storage. The notes below are historical preparation notes, not current approval status.
